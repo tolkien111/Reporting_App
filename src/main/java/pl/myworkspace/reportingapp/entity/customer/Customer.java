@@ -7,8 +7,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.myworkspace.reportingapp.entity.Address;
-import pl.myworkspace.reportingapp.entity.company.CompanyManager;
-import pl.myworkspace.reportingapp.entity.report.CreatedReport;
 
 import java.util.ArrayList;
 
@@ -22,8 +20,9 @@ public class Customer extends  CustomerUser{
 
     private String name;
 
-    @OneToMany (mappedBy = "customer", cascade = CascadeType.ALL)
-    private ArrayList <CreatedReport> listOfInstalledDevices;
+
+    private String listOfInstalledDevices; //TODO change to @OneToMany (mappedBy = "customer", cascade = CascadeType.ALL)
+                                                            //TODO <CreatedReport> listOfInstalledDevices;
 
     @OneToOne
     private Address address;
@@ -34,7 +33,6 @@ public class Customer extends  CustomerUser{
     public Customer(String email, String phoneNumber, @NotNull String name) {
         super(email, phoneNumber);
         this.name = name;
-        this.listOfInstalledDevices = new ArrayList<>();
         this.customerEmployeesList = new ArrayList<>();
     }
 }

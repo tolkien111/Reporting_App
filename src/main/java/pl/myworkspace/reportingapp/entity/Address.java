@@ -1,20 +1,17 @@
 package pl.myworkspace.reportingapp.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import pl.myworkspace.reportingapp.entity.customer.Customer;
 
 import java.util.Objects;
 import java.util.UUID;
 
-@Entity
+
 @Table(name = "addresses")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-
+@Entity
 public final class Address {
 
     @Id

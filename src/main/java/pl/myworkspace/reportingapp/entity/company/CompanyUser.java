@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "company_users")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -23,8 +23,10 @@ public abstract class CompanyUser {
     private UUID id;
     private String email;
     private String phoneNumber;
+
     @Column(name = "user_type", insertable = false, updatable = false)
     @Enumerated(EnumType.STRING)
+
     private CompanyUserType userType;
     private boolean activeUser;
 
