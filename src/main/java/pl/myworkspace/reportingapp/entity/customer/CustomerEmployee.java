@@ -15,7 +15,9 @@ public class CustomerEmployee extends CustomerUser{
 
     private String firstName;
     private String lastName;
-    @ManyToOne(cascade = CascadeType.ALL)
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     public CustomerEmployee(String email, String phoneNumber, @NotNull String firstName,@NotNull String lastName) {

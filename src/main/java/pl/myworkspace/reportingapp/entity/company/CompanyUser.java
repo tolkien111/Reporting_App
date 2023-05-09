@@ -21,14 +21,16 @@ public abstract class CompanyUser {
 
     @Id
     private UUID id;
+
     private String email;
     private String phoneNumber;
 
+
+    private boolean activeUser;
+
     @Column(name = "user_type", insertable = false, updatable = false)
     @Enumerated(EnumType.STRING)
-
     private CompanyUserType userType;
-    private boolean activeUser;
 
     protected CompanyUser(@NotNull String email,@NotNull String phoneNumber) {
         this.id = UUID.randomUUID();

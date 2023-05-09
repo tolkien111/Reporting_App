@@ -25,7 +25,8 @@ public abstract class Report {
     @JoinColumn(name = "company_employee_id")
     private CompanyEmployee companyEmployee;
 
-    @Transient //sprawdzić czy działa z tą adnotacją
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "report_id")
     private List<WorkingTime> workingTimeList;
 
     private float overallWorkingHours;
@@ -33,13 +34,13 @@ public abstract class Report {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private List <UsedPart> usedPartList;
+    //private List <UsedPart> usedPartList;
 
     public Report(@NotNull float overallWorkingHours,@NotNull String description, String lifOfUsedParts) {
         this.id = UUID.randomUUID();
         this.workingTimeList = new ArrayList<>();
         this.overallWorkingHours = overallWorkingHours;
         this.description = description;
-        this.usedPartList = new ArrayList<>();
+        //this.usedPartList = new ArrayList<>();
     }
 }

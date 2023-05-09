@@ -24,10 +24,9 @@ public class Customer extends  CustomerUser{
     private String listOfInstalledDevices; //TODO change to @OneToMany (mappedBy = "customer", cascade = CascadeType.ALL)
                                                             //TODO <CreatedReport> listOfInstalledDevices;
 
-    @OneToOne
-    private Address address;
 
-    @OneToMany (mappedBy = "customer", cascade = CascadeType.ALL)
+
+    @OneToMany (cascade = CascadeType.ALL, mappedBy = "customer")
     private ArrayList<CustomerEmployee> customerEmployeesList;
 
     public Customer(String email, String phoneNumber, @NotNull String name) {

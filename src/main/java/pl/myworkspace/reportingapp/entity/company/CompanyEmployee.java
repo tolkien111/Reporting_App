@@ -23,7 +23,7 @@ public class CompanyEmployee extends CompanyUser {
     private String userPassword;
     private LocalDate startDateOfWork;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy ="companyEmployee")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy ="companyEmployee", fetch = FetchType.LAZY)
     private List<Report> reportList;
 
     public CompanyEmployee(String email,

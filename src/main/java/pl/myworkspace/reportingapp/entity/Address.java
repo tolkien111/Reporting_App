@@ -22,7 +22,8 @@ public final class Address {
     private String city;
     private String zipCode;
 
-    @OneToOne(mappedBy = "address")
+    @OneToOne
+  //  @JoinColumn(name = "customer_id")
     private Customer customer;
 
     public Address(String street, String streetNumber, String additionalNumber, String city, String zipCode) {
