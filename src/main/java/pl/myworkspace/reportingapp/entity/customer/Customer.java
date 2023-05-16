@@ -9,29 +9,41 @@ import lombok.NoArgsConstructor;
 import pl.myworkspace.reportingapp.entity.Address;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "customers")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 
-public class Customer extends  CustomerUser{
+public class Customer extends CustomerUser {
 
 
     private String name;
 
-
-    private String listOfInstalledDevices; //TODO change to @OneToMany (mappedBy = "customer", cascade = CascadeType.ALL)
-                                                            //TODO <CreatedReport> listOfInstalledDevices;
-
+    @OneToOne(mappedBy = "customer", orphanRemoval = true)
+    private Address address;
 
 
-    @OneToMany (cascade = CascadeType.ALL, mappedBy = "customer")
-    private ArrayList<CustomerEmployee> customerEmployeesList;
+    private String listOfCreatedDevices; //TODO change to @OneToMany (mappedBy = "customer", cascade = CascadeType.ALL)
+    //TODO <CreatedReport> listOfInstalledDevices;
 
-    public Customer(String email, String phoneNumber, @NotNull String name) {
-        super(email, phoneNumber);
-        this.name = name;
-        this.customerEmployeesList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY)
+    private List<CustomerEmployee> customerEmployeesList;
+
+
+    public void addAddress(Address address) { // dodać tą metodę w konstruktorze 12.05.2023!!
+        if(address != null && this.address == null) {
+            address.setCustomer(this);
+            this.address = address;
+        }
+    }
+
+    public void addCustomerEmployee (CustomerEmployee customerEmployee){
+        if(customerEmployee != null && customerEmployeesList.contains(customerEmployee)){
+            customerEmployee.setCustomer(this);
+            customerEmployeesList.add(customerEmployee);
+        }
     }
 }

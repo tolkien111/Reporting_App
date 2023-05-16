@@ -25,4 +25,10 @@ public class CustomerEmployee extends CustomerUser{
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
+    public void setCustomer(Customer customer) {
+        if(customer != null && this.customer == null) {
+            this.customer = customer;
+        }
+    }
 }

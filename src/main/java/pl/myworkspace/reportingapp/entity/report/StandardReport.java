@@ -13,7 +13,7 @@ public class StandardReport extends Report{
 
 
 
-    private String installedDevice; //TODO change to InstalledDevice installedDevice
+  //  private String installedDevice; //TODO change to InstalledDevice installedDevice
 
 
 

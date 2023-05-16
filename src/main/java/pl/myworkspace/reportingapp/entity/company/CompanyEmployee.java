@@ -40,6 +40,14 @@ public class CompanyEmployee extends CompanyUser {
         this.reportList = new ArrayList<>();
     }
 
+    public void addReport(Report report){
+        if (report != null && !reportList.contains(report)){
+            report.setCompanyEmployee(this);
+            reportList.add(report);
+
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

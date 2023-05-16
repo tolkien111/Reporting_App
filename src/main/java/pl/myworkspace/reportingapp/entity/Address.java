@@ -23,7 +23,7 @@ public final class Address {
     private String zipCode;
 
     @OneToOne
-  //  @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     public Address(String street, String streetNumber, String additionalNumber, String city, String zipCode) {
@@ -33,6 +33,12 @@ public final class Address {
         this.additionalNumber = additionalNumber;
         this.city = city;
         this.zipCode = zipCode;
+    }
+
+    public void setCustomer(Customer customer) {
+        if(customer != null && this.customer == null) {
+            this.customer = customer;
+        }
     }
 
     @Override

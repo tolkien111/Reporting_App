@@ -2,12 +2,13 @@ package pl.myworkspace.reportingapp.entity.report;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -19,18 +20,25 @@ final class WorkingTime {
     @Id
     private UUID id;
 
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
-    private Duration duration;
+    private LocalDate date;
+    private LocalTime startTime;
+    private LocalTime endTime;
+
 
     @ManyToOne
+    @JoinColumn(name = "report_id")
     private Report report;
 
-    public WorkingTime(LocalDateTime startDateTime, LocalDateTime endDateTime, Duration duration) {
-        this.id = UUID.randomUUID();
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
-        this.duration = duration;
+    public WorkingTime(UUID id, LocalDate date, LocalTime startTime, LocalTime endTime) {
+        this.id = id;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+
+    public void setReport(Report report) {
+        this.report = report;
     }
 
     @Override
@@ -38,11 +46,11 @@ final class WorkingTime {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WorkingTime that = (WorkingTime) o;
-        return Objects.equals(id, that.id) && Objects.equals(startDateTime, that.startDateTime) && Objects.equals(endDateTime, that.endDateTime) && Objects.equals(duration, that.duration);
+        return Objects.equals(id, that.id) && Objects.equals(date, that.date) && Objects.equals(startTime, that.startTime) && Objects.equals(endTime, that.endTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, startDateTime, endDateTime, duration);
+        return Objects.hash(id, date, startTime, endTime);
     }
 }

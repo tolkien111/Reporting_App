@@ -23,7 +23,10 @@ public class Device {
     private String internalId;
     private int revision;
 
-    @ManyToMany(mappedBy = "deviceList")
+    @ManyToMany (cascade = CascadeType.ALL)
+    @JoinTable(name = "device_part",
+            joinColumns = @JoinColumn(name = "device_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "part_id", referencedColumnName = "id"))
     private List<Part> partList;
 
     public Device(String name, String internalId, int revision) {
@@ -33,5 +36,11 @@ public class Device {
         this.revision = revision;
         this.partList = new ArrayList<>();
     }
+
+    public void addPart(Part part){
+        partList.add(part);
+        part.getDeviceList().add(this);
+    }
+
 
 }
