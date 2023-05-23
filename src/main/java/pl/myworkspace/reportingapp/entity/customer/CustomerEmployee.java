@@ -5,6 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.myworkspace.reportingapp.entity.report.Report;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "customer_employees")
@@ -20,10 +24,22 @@ public class CustomerEmployee extends CustomerUser{
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    public CustomerEmployee(String email, String phoneNumber, @NotNull String firstName,@NotNull String lastName) {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerEmployee", fetch = FetchType.LAZY)
+    private List<Report> reportList;
+
+    public CustomerEmployee(String email, String phoneNumber, String firstName, String lastName, Customer customer, List<Report> reportList) {
         super(email, phoneNumber);
         this.firstName = firstName;
         this.lastName = lastName;
+        this.customer = customer;
+        this.reportList = new ArrayList<>();
+    }
+
+    public void addReport(Report report) {
+        if (report != null && !reportList.contains(report)) {
+            report.setCustomerEmployee(this);
+            reportList.add(report);
+        }
     }
 
     public void setCustomer(Customer customer) {
@@ -31,4 +47,6 @@ public class CustomerEmployee extends CustomerUser{
             this.customer = customer;
         }
     }
+
+
 }

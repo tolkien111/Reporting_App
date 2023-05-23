@@ -38,7 +38,9 @@ final class WorkingTime {
 
 
     public void setReport(Report report) {
-        this.report = report;
+        if (report != null && this.report == null) {
+            this.report = report;
+        }
     }
 
     @Override

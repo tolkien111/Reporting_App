@@ -1,15 +1,9 @@
 package pl.myworkspace.reportingapp.entity.part;
 
-
 import jakarta.persistence.*;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.myworkspace.reportingapp.entity.device.Device;
 
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -22,34 +16,32 @@ public class Part {
     @Id
     private UUID id;
 
-    private String name;
-    private String internalId;
-    private int revision;
+    @OneToOne
+    @JoinColumn(name = "partBase_id")
+    private PartBase partBase;
 
-    @ManyToMany (mappedBy = "partList")
-    private List<Device> deviceList;
+    private String serialNumber;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "part")
-    private CreatedPart createdPart;
+    @ManyToOne
+    @JoinColumn(name = "usedPart_id")
+    private UsedPart usedPart;
 
-    public Part(String name, String internalId, int revision) {
+    public Part(PartBase partBase, String serialNumber) {
         this.id = UUID.randomUUID();
-        this.name = name;
-        this.internalId = internalId;
-        this.revision = revision;
-        this.deviceList = new ArrayList<>();
+        this.partBase = partBase;
+        this.serialNumber = serialNumber;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Part part = (Part) o;
-        return revision == part.revision && Objects.equals(id, part.id) && Objects.equals(name, part.name) && Objects.equals(internalId, part.internalId);
+        Part that = (Part) o;
+        return Objects.equals(id, that.id) && Objects.equals(partBase, that.partBase) && Objects.equals(serialNumber, that.serialNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, internalId, revision);
+        return Objects.hash(id, partBase, serialNumber);
     }
 }

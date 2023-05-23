@@ -24,10 +24,8 @@ public class UsedPart {
     private int amount;
 
 
-
-
     @OneToMany (cascade = CascadeType.ALL, mappedBy = "usedPart")
-    private List<CreatedPart> createdPartList;
+    private List<Part> partList;
 
     @ManyToOne
     @JoinColumn(name = "report_id")
@@ -37,7 +35,7 @@ public class UsedPart {
     public UsedPart(int amount) {
         this.id = UUID.randomUUID();
         this.amount = amount;
-        this.createdPartList = new ArrayList<>();
+        this.partList = new ArrayList<>();
     }
 
     @Override
@@ -45,11 +43,11 @@ public class UsedPart {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UsedPart usedPart = (UsedPart) o;
-        return amount == usedPart.amount && Objects.equals(id, usedPart.id) && Objects.equals(createdPartList, usedPart.createdPartList);
+        return amount == usedPart.amount && Objects.equals(id, usedPart.id) && Objects.equals(partList, usedPart.partList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, amount, createdPartList);
+        return Objects.hash(id, amount, partList);
     }
 }

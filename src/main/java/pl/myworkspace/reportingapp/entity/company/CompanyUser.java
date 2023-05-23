@@ -24,8 +24,6 @@ public abstract class CompanyUser {
 
     private String email;
     private String phoneNumber;
-
-
     private boolean activeUser;
 
     @Column(name = "user_type", insertable = false, updatable = false)

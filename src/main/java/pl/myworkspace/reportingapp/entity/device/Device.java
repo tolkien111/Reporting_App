@@ -2,45 +2,49 @@ package pl.myworkspace.reportingapp.entity.device;
 
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.myworkspace.reportingapp.entity.part.Part;
+import pl.myworkspace.reportingapp.entity.customer.Customer;
+import pl.myworkspace.reportingapp.entity.report.Report;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "devices")
-@NoArgsConstructor
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@NoArgsConstructor (access = AccessLevel.PROTECTED)
 @Getter
 public class Device {
 
     @Id
     private UUID id;
 
-    private String name;
-    private String internalId;
-    private int revision;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "deviceBase_id")
+    private DeviceBase deviceBase;
 
-    @ManyToMany (cascade = CascadeType.ALL)
-    @JoinTable(name = "device_part",
-            joinColumns = @JoinColumn(name = "device_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "part_id", referencedColumnName = "id"))
-    private List<Part> partList;
+    private String serialNumber;
 
-    public Device(String name, String internalId, int revision) {
-        this.id = UUID.randomUUID();
-        this.name = name;
-        this.internalId = internalId;
-        this.revision = revision;
-        this.partList = new ArrayList<>();
+    @ManyToOne
+    private Customer customer;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "device", fetch = FetchType.LAZY)
+    private List<Report> reportList;
+
+
+    public void addReport(Report report){
+        if(report !=null && !reportList.contains(report)){
+            report.setDevice(this);
+            reportList.add(report);
+        }
     }
 
-    public void addPart(Part part){
-        partList.add(part);
-        part.getDeviceList().add(this);
+    public void setCustomer(Customer customer) {
+        if (customer != null && this.customer == null) {
+            this.customer = customer;
+        }
     }
-
 
 }
