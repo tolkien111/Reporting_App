@@ -1,12 +1,10 @@
-package pl.myworkspace.reportingapp.entity.part;
+package pl.myworkspace.reportingapp.entity;
 
 
 import jakarta.persistence.*;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.myworkspace.reportingapp.entity.device.DeviceBase;
-
+import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +24,12 @@ public class PartBase {
     private String internalId;
     private int revision;
 
-    @ManyToMany (mappedBy = "partBaseList")
+    @ManyToMany(mappedBy = "partBaseList")
     private List<DeviceBase> deviceBaseList;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "partBase")
-    private Part part;
-
-    public PartBase(String name, String internalId, int revision) {
+    public PartBase(@NonNull String name,
+                    @NonNull String internalId,
+                    int revision) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.internalId = internalId;
@@ -40,7 +37,13 @@ public class PartBase {
         this.deviceBaseList = new ArrayList<>();
     }
 
+    public void addCompatibleDeviceBase(DeviceBase deviceBase) {
+        if (deviceBase != null && !deviceBaseList.contains(deviceBase)) {
+            deviceBaseList.add(deviceBase);
+            deviceBase.getPartBaseList().add(this);
+        }
 
+    }
 
     @Override
     public boolean equals(Object o) {

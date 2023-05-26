@@ -1,11 +1,11 @@
-package pl.myworkspace.reportingapp.entity.company;
+package pl.myworkspace.reportingapp.entity;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -21,20 +21,24 @@ public abstract class CompanyUser {
 
     @Id
     private UUID id;
-
     private String email;
-    private String phoneNumber;
+    private String userPassword;
     private boolean activeUser;
 
     @Column(name = "user_type", insertable = false, updatable = false)
     @Enumerated(EnumType.STRING)
     private CompanyUserType userType;
 
-    protected CompanyUser(@NotNull String email,@NotNull String phoneNumber) {
+    protected CompanyUser(@NonNull String email,
+                          @NonNull String userPassword) {
         this.id = UUID.randomUUID();
         this.email = email;
-        this.phoneNumber = phoneNumber;
+        this.userPassword = userPassword;
         this.activeUser = false;
+    }
+
+    public void setActiveUser(boolean activeUser) {
+        this.activeUser = activeUser;
     }
 
     @Override
@@ -42,12 +46,12 @@ public abstract class CompanyUser {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CompanyUser that = (CompanyUser) o;
-        return Objects.equals(id, that.id) && Objects.equals(email, that.email) && Objects.equals(phoneNumber, that.phoneNumber);
+        return Objects.equals(id, that.id) && Objects.equals(email, that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, phoneNumber);
+        return Objects.hash(id, email);
     }
 }
 

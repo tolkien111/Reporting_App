@@ -1,11 +1,10 @@
-package pl.myworkspace.reportingapp.entity.company;
+package pl.myworkspace.reportingapp.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.myworkspace.reportingapp.entity.report.Report;
+import lombok.NonNull;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,22 +19,22 @@ public class CompanyEmployee extends CompanyUser {
 
     private String firstName;
     private String lastName;
-    private String userPassword;
+    private String phoneNumber;
     private LocalDate startDateOfWork;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy ="companyEmployee", fetch = FetchType.LAZY)
     private List<Report> reportList;
 
-    public CompanyEmployee(String email,
-                           String phoneNumber,
-                           @NotNull String firstName,
-                           @NotNull String lastName,
-                           @NotNull String userPassword,
-                           @NotNull LocalDate startDateOfWork) {
-        super(email, phoneNumber);
+    public CompanyEmployee(@NonNull String email,
+                           @NonNull String userPassword,
+                           @NonNull String firstName,
+                           @NonNull String lastName,
+                           @NonNull String phoneNumber,
+                           @NonNull LocalDate startDateOfWork) {
+        super(email, userPassword);
         this.firstName = firstName;
         this.lastName = lastName;
-        this.userPassword = userPassword;
+        this.phoneNumber = phoneNumber;
         this.startDateOfWork = startDateOfWork;
         this.reportList = new ArrayList<>();
     }
@@ -44,7 +43,6 @@ public class CompanyEmployee extends CompanyUser {
         if (report != null && !reportList.contains(report)){
             report.setCompanyEmployee(this);
             reportList.add(report);
-
         }
     }
 
@@ -54,11 +52,11 @@ public class CompanyEmployee extends CompanyUser {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         CompanyEmployee that = (CompanyEmployee) o;
-        return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(startDateOfWork, that.startDateOfWork);
+        return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(startDateOfWork, that.startDateOfWork);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), firstName, lastName, startDateOfWork);
+        return Objects.hash(super.hashCode(), firstName, lastName, phoneNumber, startDateOfWork);
     }
 }

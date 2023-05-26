@@ -1,20 +1,19 @@
-package pl.myworkspace.reportingapp.entity.device;
+package pl.myworkspace.reportingapp.entity;
 
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.myworkspace.reportingapp.entity.customer.Customer;
-import pl.myworkspace.reportingapp.entity.report.Report;
+import lombok.NonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "devices")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@NoArgsConstructor (access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Device {
 
@@ -22,29 +21,38 @@ public class Device {
     private UUID id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "deviceBase_id")
+    @JoinColumn(name = "device_base_id")
     private DeviceBase deviceBase;
 
     private String serialNumber;
 
     @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "device", fetch = FetchType.LAZY)
     private List<Report> reportList;
 
 
-    public void addReport(Report report){
-        if(report !=null && !reportList.contains(report)){
+    public Device(@NonNull DeviceBase deviceBase,
+                  @NonNull String serialNumber) {
+        this.id = UUID.randomUUID();
+        this.deviceBase = deviceBase;
+        this.serialNumber = serialNumber;
+        this.reportList = new ArrayList<>();
+    }
+
+    protected void addReport(Report report) {
+        if (report != null && !reportList.contains(report)) {
             report.setDevice(this);
             reportList.add(report);
         }
     }
 
-    public void setCustomer(Customer customer) {
+
+    protected void setCustomer(Customer customer) {
         if (customer != null && this.customer == null) {
             this.customer = customer;
         }
     }
-
 }

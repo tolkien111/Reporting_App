@@ -1,16 +1,15 @@
-package pl.myworkspace.reportingapp.entity.customer;
+package pl.myworkspace.reportingapp.entity;
 
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.myworkspace.reportingapp.entity.Address;
-import pl.myworkspace.reportingapp.entity.device.Device;
-import pl.myworkspace.reportingapp.entity.report.Report;
+import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "customers")
@@ -22,40 +21,39 @@ public class Customer extends CustomerUser {
 
     private String name;
 
-    @OneToOne(mappedBy = "customer", orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "customer", orphanRemoval = true)
     private Address address;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY)
-    private List<Report> reportList;
-
-    @OneToMany (cascade = CascadeType.ALL, mappedBy = "customer")
-    private List<Device> deviceList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY)
     private List<CustomerEmployee> customerEmployeesList;
 
+    @OneToMany (cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY)
+    private List<Device> deviceList;
 
-    public Customer(String email,
-                    String phoneNumber,
-                    String name,
-                    Address address) {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY)
+    private List<Report> reportList;
+
+    public Customer(@NonNull String email,
+                    @NonNull String phoneNumber,
+                    @NonNull String name,
+                    @NonNull Address address) {
         super(email, phoneNumber);
         this.name = name;
-        this.address = addAddressConstructor(address);
-        this.reportList = new ArrayList<>();
-        this.deviceList = new ArrayList<>();
+        this.address = addAddressIntoConstructor(address);
         this.customerEmployeesList = new ArrayList<>();
+        this.deviceList = new ArrayList<>();
+        this.reportList = new ArrayList<>();
     }
 
-    private Address addAddressConstructor(Address address) {
-        if (address != null && this.address == null) {
+    private Address addAddressIntoConstructor(Address address) {
+        if (this.address == null) {
             address.setCustomer(this);
             return address;
         }
         return this.address;
     }
 
-    public void addReport(Report report) {
+    protected void addReport(Report report) {
         if (report != null && !reportList.contains(report)) {
             report.setCustomer(this);
             reportList.add(report);
@@ -67,7 +65,6 @@ public class Customer extends CustomerUser {
             device.setCustomer(this);
             deviceList.add(device);
         }
-
     }
 
     public void addCustomerEmployee(CustomerEmployee customerEmployee) {
@@ -75,5 +72,19 @@ public class Customer extends CustomerUser {
             customerEmployee.setCustomer(this);
             customerEmployeesList.add(customerEmployee);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(name, customer.name) && Objects.equals(address, customer.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), name, address);
     }
 }

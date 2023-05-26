@@ -1,4 +1,4 @@
-package pl.myworkspace.reportingapp.entity.report;
+package pl.myworkspace.reportingapp.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -6,6 +6,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @Getter
-final class WorkingTime {
+public final class WorkingTime {
 
     @Id
     private UUID id;
@@ -29,13 +30,14 @@ final class WorkingTime {
     @JoinColumn(name = "report_id")
     private Report report;
 
-    public WorkingTime(UUID id, LocalDate date, LocalTime startTime, LocalTime endTime) {
-        this.id = id;
+    public WorkingTime(@NonNull LocalDate date,
+                       @NonNull LocalTime startTime,
+                       @NonNull LocalTime endTime) {
+        this.id = UUID.randomUUID();
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
     }
-
 
     public void setReport(Report report) {
         if (report != null && this.report == null) {

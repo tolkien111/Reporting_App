@@ -1,18 +1,18 @@
-package pl.myworkspace.reportingapp.entity.customer;
+package pl.myworkspace.reportingapp.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.myworkspace.reportingapp.entity.report.Report;
+import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "customer_employees")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 
 public class CustomerEmployee extends CustomerUser{
@@ -27,22 +27,25 @@ public class CustomerEmployee extends CustomerUser{
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerEmployee", fetch = FetchType.LAZY)
     private List<Report> reportList;
 
-    public CustomerEmployee(String email, String phoneNumber, String firstName, String lastName, Customer customer, List<Report> reportList) {
+    public CustomerEmployee(@NonNull String email,
+                            @NotNull String phoneNumber,
+                            @NonNull String firstName,
+                            @NotNull String lastName) {
         super(email, phoneNumber);
         this.firstName = firstName;
         this.lastName = lastName;
-        this.customer = customer;
         this.reportList = new ArrayList<>();
     }
 
-    public void addReport(Report report) {
+
+    protected void addReport(Report report) {
         if (report != null && !reportList.contains(report)) {
             report.setCustomerEmployee(this);
             reportList.add(report);
         }
     }
 
-    public void setCustomer(Customer customer) {
+    protected void setCustomer(Customer customer) {
         if(customer != null && this.customer == null) {
             this.customer = customer;
         }

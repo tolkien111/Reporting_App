@@ -1,15 +1,17 @@
-package pl.myworkspace.reportingapp.entity.part;
+package pl.myworkspace.reportingapp.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Table(name = "parts")
-@NoArgsConstructor
+@NoArgsConstructor (access = AccessLevel.PROTECTED)
 @Getter
 public class Part {
 
@@ -17,19 +19,26 @@ public class Part {
     private UUID id;
 
     @OneToOne
-    @JoinColumn(name = "partBase_id")
+    @JoinColumn(name = "part_base_id")
     private PartBase partBase;
 
     private String serialNumber;
 
     @ManyToOne
-    @JoinColumn(name = "usedPart_id")
-    private UsedPart usedPart;
+    @JoinColumn(name = "part_used_id")
+    private PartUsed partUsed;
 
-    public Part(PartBase partBase, String serialNumber) {
+    public Part(@NonNull PartBase partBase,
+                @NonNull String serialNumber) {
         this.id = UUID.randomUUID();
         this.partBase = partBase;
         this.serialNumber = serialNumber;
+    }
+
+    public void setPartUsed(PartUsed partUsed) {
+        if (partUsed != null && this.partUsed == null) {
+            this.partUsed = partUsed;
+        }
     }
 
     @Override

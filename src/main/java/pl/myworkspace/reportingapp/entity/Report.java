@@ -1,15 +1,11 @@
-package pl.myworkspace.reportingapp.entity.report;
+package pl.myworkspace.reportingapp.entity;
 
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.myworkspace.reportingapp.entity.company.CompanyEmployee;
-import pl.myworkspace.reportingapp.entity.customer.Customer;
-import pl.myworkspace.reportingapp.entity.customer.CustomerEmployee;
-import pl.myworkspace.reportingapp.entity.device.Device;
-import pl.myworkspace.reportingapp.entity.part.UsedPart;
+import lombok.NonNull;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -17,8 +13,8 @@ import java.util.*;
 @Entity
 @Table(name = "reports")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(name = "report_type")
-//@DiscriminatorValue(value = "REPORT")
+@DiscriminatorColumn(name = "report_type")
+@DiscriminatorValue(value = "REPORT")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Report {
@@ -27,11 +23,12 @@ public class Report {
     private UUID id;
 
     @Column(name = "reason")
+    @ElementCollection(targetClass = Enum.class)
     @Enumerated(EnumType.STRING)
-    private Set<ReasonType> reasonTypeList;
+    private Set<ReasonType> reasonTypeSet;
 
     @ManyToOne
-    @JoinColumn(name = "companyEmployee_id")
+    @JoinColumn(name = "company_employee_id")
     private CompanyEmployee companyEmployee;
 
     private LocalDate reportDate;
@@ -41,11 +38,11 @@ public class Report {
 
     private float overallWorkingHours;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "varchar", length = 4000)
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "report")
-    private List<UsedPart> usedPartList;
+    private List<PartUsed> partUsedList;
 
     @ManyToOne
     @JoinColumn(name = "device_id")
@@ -56,28 +53,26 @@ public class Report {
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "customerEmployee_id")
+    @JoinColumn(name = "customer_employee_id")
     private CustomerEmployee customerEmployee;
 
 
-    public Report(CompanyEmployee companyEmployee,
-                  LocalDate reportDate,
+    public Report(@NonNull LocalDate reportDate,
                   float overallWorkingHours,
-                  String description,
-                  Device device,
-                  Customer customer,
-                  CustomerEmployee customerEmployee) {
+                  @NonNull String description) {
         this.id = UUID.randomUUID();
-        this.reasonTypeList = new HashSet<>();
-        this.companyEmployee = companyEmployee;
+        this.reasonTypeSet = new LinkedHashSet<>();
         this.reportDate = reportDate;
         this.workingTimeList = new ArrayList<>();
         this.overallWorkingHours = overallWorkingHours;
         this.description = description;
-        this.usedPartList = new ArrayList<>();
-        this.device = device;
-        this.customer = customer;
-        this.customerEmployee = customerEmployee;
+        this.partUsedList = new ArrayList<>();
+    }
+
+    public void addReason(ReasonType reasonType) {
+        if (reasonType != null) {
+            reasonTypeSet.add(reasonType);
+        }
     }
 
     public void addWorkingTime(WorkingTime workingTime) {
@@ -87,33 +82,54 @@ public class Report {
         }
     }
 
-    public void addReason(ReasonType reasonType) {
-        if (reasonType != null) {
-            reasonTypeList.add(reasonType);
+    public void addPartUsed(PartUsed partUsed) {
+        if (partUsed != null && !partUsedList.contains(partUsed)) {
+            partUsed.setReport(this);
+            partUsedList.add(partUsed);
         }
     }
 
-    public void setCompanyEmployee(CompanyEmployee companyEmployee) {
+    public void addDevice(Device device) {
+        if (device != null && this.device == null) {
+            device.addReport(this);
+        }
+    }
+
+    public void addCustomer(Customer customer) {
+        if (customer != null && this.customer == null) {
+            customer.addReport(this);
+        }
+    }
+
+    public void addCustomerEmployee (CustomerEmployee customerEmployee) {
+        if (customerEmployee != null && this.customerEmployee == null) {
+            customerEmployee.addReport(this);
+        }
+    }
+
+    protected void setCompanyEmployee(CompanyEmployee companyEmployee) {
         if (companyEmployee != null && this.companyEmployee == null) {
             this.companyEmployee = companyEmployee;
         }
     }
 
-    public void setDevice(Device device) {
+    protected void setDevice(Device device) {
         if (device != null && this.device == null) {
             this.device = device;
         }
     }
 
-    public void setCustomer(Customer customer) {
+    protected void setCustomer(Customer customer) {
         if (customer != null && this.customer == null) {
             this.customer = customer;
         }
     }
 
-    public void setCustomerEmployee(CustomerEmployee customerEmployee) {
+    protected void setCustomerEmployee(CustomerEmployee customerEmployee) {
         if (customerEmployee != null && this.customerEmployee == null) {
             this.customerEmployee = customerEmployee;
         }
     }
+
+
 }

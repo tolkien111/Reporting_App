@@ -1,10 +1,10 @@
-package pl.myworkspace.reportingapp.entity.customer;
+package pl.myworkspace.reportingapp.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -20,12 +20,19 @@ public abstract class CustomerUser {
     private UUID id;
     private String email;
     private String phoneNumber;
+    private boolean activeUser;
 
-    public CustomerUser(@NotNull String email,@NotNull String phoneNumber) {
+    public CustomerUser(@NonNull String email,
+                        @NonNull String phoneNumber) {
         this.id = UUID.randomUUID();
         this.email = email;
         this.phoneNumber = phoneNumber;
-            }
+        this.activeUser = false;
+    }
+
+    public void setActiveUser(boolean activeUser) {
+        this.activeUser = activeUser;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,8 +1,8 @@
 package pl.myworkspace.reportingapp.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import pl.myworkspace.reportingapp.entity.customer.Customer;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -26,7 +26,11 @@ public final class Address {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    public Address(String street, String streetNumber, String additionalNumber, String city, String zipCode) {
+    public Address(@NonNull String street,
+                   @NonNull String streetNumber,
+                   String additionalNumber,
+                   @NotNull String city,
+                   @NonNull String zipCode) {
         this.id = UUID.randomUUID();
         this.street = street;
         this.streetNumber = streetNumber;
@@ -35,7 +39,7 @@ public final class Address {
         this.zipCode = zipCode;
     }
 
-    public void setCustomer(Customer customer) {
+    void setCustomer(Customer customer) {
         if(customer != null && this.customer == null) {
             this.customer = customer;
         }
@@ -44,7 +48,6 @@ public final class Address {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
         return Objects.equals(street, address.street) && Objects.equals(streetNumber, address.streetNumber) && Objects.equals(additionalNumber, address.additionalNumber) && Objects.equals(city, address.city) && Objects.equals(zipCode, address.zipCode) && Objects.equals(customer, address.customer);
     }
