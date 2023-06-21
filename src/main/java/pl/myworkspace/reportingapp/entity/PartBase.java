@@ -2,6 +2,7 @@ package pl.myworkspace.reportingapp.entity;
 
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -13,13 +14,13 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "parts_base")
-@NoArgsConstructor
+@Inheritance (strategy = InheritanceType.SINGLE_TABLE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class PartBase {
 
     @Id
     private UUID id;
-
     private String name;
     private String internalId;
     private int revision;
@@ -50,11 +51,11 @@ public class PartBase {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PartBase partBase = (PartBase) o;
-        return revision == partBase.revision && Objects.equals(id, partBase.id) && Objects.equals(name, partBase.name) && Objects.equals(internalId, partBase.internalId);
+        return revision == partBase.revision && Objects.equals(name, partBase.name) && Objects.equals(internalId, partBase.internalId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, internalId, revision);
+        return Objects.hash(name, internalId, revision);
     }
 }

@@ -20,7 +20,6 @@ public final class WorkingTime {
 
     @Id
     private UUID id;
-
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -37,9 +36,10 @@ public final class WorkingTime {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.report = null;
     }
 
-    public void setReport(Report report) {
+    void setReport(Report report) {
         if (report != null && this.report == null) {
             this.report = report;
         }
@@ -50,11 +50,11 @@ public final class WorkingTime {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WorkingTime that = (WorkingTime) o;
-        return Objects.equals(id, that.id) && Objects.equals(date, that.date) && Objects.equals(startTime, that.startTime) && Objects.equals(endTime, that.endTime);
+        return Objects.equals(date, that.date) && Objects.equals(startTime, that.startTime) && Objects.equals(endTime, that.endTime) && Objects.equals(report, that.report);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, startTime, endTime);
+        return Objects.hash(date, startTime, endTime, report);
     }
 }

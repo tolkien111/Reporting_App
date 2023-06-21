@@ -46,12 +46,12 @@ public abstract class CompanyUser {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CompanyUser that = (CompanyUser) o;
-        return Objects.equals(id, that.id) && Objects.equals(email, that.email);
+        return Objects.equals(email, that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email);
+        return Objects.hash(email);
     }
 }
 

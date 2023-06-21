@@ -21,6 +21,7 @@ public final class Address {
     private String additionalNumber;
     private String city;
     private String zipCode;
+    private String comments;
 
     @OneToOne
     @JoinColumn(name = "customer_id")
@@ -30,13 +31,15 @@ public final class Address {
                    @NonNull String streetNumber,
                    String additionalNumber,
                    @NotNull String city,
-                   @NonNull String zipCode) {
+                   @NonNull String zipCode,
+                   String comments) {
         this.id = UUID.randomUUID();
         this.street = street;
         this.streetNumber = streetNumber;
         this.additionalNumber = additionalNumber;
         this.city = city;
         this.zipCode = zipCode;
+        this.comments = comments;
     }
 
     void setCustomer(Customer customer) {
@@ -48,13 +51,14 @@ public final class Address {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return Objects.equals(street, address.street) && Objects.equals(streetNumber, address.streetNumber) && Objects.equals(additionalNumber, address.additionalNumber) && Objects.equals(city, address.city) && Objects.equals(zipCode, address.zipCode) && Objects.equals(customer, address.customer);
+        return Objects.equals(street, address.street) && Objects.equals(streetNumber, address.streetNumber) && Objects.equals(additionalNumber, address.additionalNumber) && Objects.equals(city, address.city) && Objects.equals(zipCode, address.zipCode) && Objects.equals(comments, address.comments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(street, streetNumber, additionalNumber, city, zipCode, customer);
+        return Objects.hash(street, streetNumber, additionalNumber, city, zipCode, comments);
     }
 }
 

@@ -9,6 +9,7 @@ import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -54,5 +55,18 @@ public class Device {
         if (customer != null && this.customer == null) {
             this.customer = customer;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Device device = (Device) o;
+        return Objects.equals(deviceBase, device.deviceBase) && Objects.equals(serialNumber, device.serialNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(deviceBase, serialNumber);
     }
 }

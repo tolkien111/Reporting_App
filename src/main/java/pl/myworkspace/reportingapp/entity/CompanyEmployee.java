@@ -52,7 +52,10 @@ public class CompanyEmployee extends CompanyUser {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         CompanyEmployee that = (CompanyEmployee) o;
-        return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(startDateOfWork, that.startDateOfWork);
+        return Objects.equals(firstName, that.firstName)
+                && Objects.equals(lastName, that.lastName)
+                && Objects.equals(phoneNumber, that.phoneNumber)
+                && Objects.equals(startDateOfWork, that.startDateOfWork);
     }
 
     @Override

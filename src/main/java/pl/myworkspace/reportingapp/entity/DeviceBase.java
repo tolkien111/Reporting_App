@@ -21,13 +21,12 @@ public class DeviceBase {
 
     @Id
     private UUID id;
-
     private String name;
     private String internalId;
     private int revision;
 
     @ManyToMany (cascade = CascadeType.ALL)
-    @JoinTable(name = "deviceBase_partBase",
+    @JoinTable(name = "devices_parts_compatibility",
             joinColumns = @JoinColumn(name = "deviceBase_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "partBase_id", referencedColumnName = "id"))
     private List<PartBase> partBaseList;
@@ -55,11 +54,11 @@ public class DeviceBase {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DeviceBase that = (DeviceBase) o;
-        return revision == that.revision && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(internalId, that.internalId);
+        return revision == that.revision && Objects.equals(name, that.name) && Objects.equals(internalId, that.internalId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, internalId, revision);
+        return Objects.hash(name, internalId, revision);
     }
 }

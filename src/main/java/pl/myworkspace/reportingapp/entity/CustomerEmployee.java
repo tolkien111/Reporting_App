@@ -9,10 +9,11 @@ import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "customer_employees")
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 
 public class CustomerEmployee extends CustomerUser{
@@ -51,5 +52,17 @@ public class CustomerEmployee extends CustomerUser{
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        CustomerEmployee that = (CustomerEmployee) o;
+        return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), firstName, lastName);
+    }
 }

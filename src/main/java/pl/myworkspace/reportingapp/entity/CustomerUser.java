@@ -39,11 +39,11 @@ public abstract class CustomerUser {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CustomerUser that = (CustomerUser) o;
-        return Objects.equals(id, that.id) && Objects.equals(email, that.email) && Objects.equals(phoneNumber, that.phoneNumber);
+        return Objects.equals(email, that.email) && Objects.equals(phoneNumber, that.phoneNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, phoneNumber);
+        return Objects.hash(email, phoneNumber);
     }
 }

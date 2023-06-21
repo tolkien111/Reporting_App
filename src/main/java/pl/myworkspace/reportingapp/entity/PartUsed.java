@@ -12,7 +12,6 @@ import java.util.*;
 @Entity
 @Table(name = "parts_used")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class PartUsed {
 
@@ -29,9 +28,9 @@ public class PartUsed {
     private Report report;
 
 
-    public PartUsed(int amount) {
+    public PartUsed() {
         this.id = UUID.randomUUID();
-        this.amount = amount;
+        this.amount = partList.size();
         this.partList = new LinkedHashSet<>();
     }
 
@@ -42,7 +41,7 @@ public class PartUsed {
         }
     }
 
-    public void setReport(Report report) {
+    protected void setReport(Report report) {
         if (report != null && this.report == null) {
             this.report = report;
         }
@@ -53,11 +52,11 @@ public class PartUsed {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PartUsed partUsed = (PartUsed) o;
-        return amount == partUsed.amount && Objects.equals(id, partUsed.id) && Objects.equals(partList, partUsed.partList);
+        return Objects.equals(id, partUsed.id) && Objects.equals(report, partUsed.report);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, amount, partList);
+        return Objects.hash(id, report);
     }
 }

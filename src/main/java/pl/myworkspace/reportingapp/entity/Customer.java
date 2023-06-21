@@ -39,13 +39,13 @@ public class Customer extends CustomerUser {
                     @NonNull Address address) {
         super(email, phoneNumber);
         this.name = name;
-        this.address = addAddressIntoConstructor(address);
+        this.address = addAddress(address);
         this.customerEmployeesList = new ArrayList<>();
         this.deviceList = new ArrayList<>();
         this.reportList = new ArrayList<>();
     }
 
-    private Address addAddressIntoConstructor(Address address) {
+    private Address addAddress(Address address) {
         if (this.address == null) {
             address.setCustomer(this);
             return address;

@@ -18,7 +18,7 @@ public class Part {
     @Id
     private UUID id;
 
-    @OneToOne
+    @OneToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "part_base_id")
     private PartBase partBase;
 
@@ -35,7 +35,7 @@ public class Part {
         this.serialNumber = serialNumber;
     }
 
-    public void setPartUsed(PartUsed partUsed) {
+    protected void setPartUsed(PartUsed partUsed) {
         if (partUsed != null && this.partUsed == null) {
             this.partUsed = partUsed;
         }

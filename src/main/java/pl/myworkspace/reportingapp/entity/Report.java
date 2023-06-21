@@ -22,9 +22,9 @@ public class Report {
     @Id
     private UUID id;
 
-    @Column(name = "reason")
+    @Column(name = "reason", columnDefinition = "varchar(40)")
     @ElementCollection(targetClass = Enum.class)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     private Set<ReasonType> reasonTypeSet;
 
     @ManyToOne
@@ -34,11 +34,11 @@ public class Report {
     private LocalDate reportDate;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "report", fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<WorkingTime> workingTimeList;
+    private Set<WorkingTime> workingTimeList;
 
     private float overallWorkingHours;
 
-    @Column(columnDefinition = "varchar", length = 4000)
+    @Column(length = 4000)
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "report")
@@ -63,7 +63,7 @@ public class Report {
         this.id = UUID.randomUUID();
         this.reasonTypeSet = new LinkedHashSet<>();
         this.reportDate = reportDate;
-        this.workingTimeList = new ArrayList<>();
+        this.workingTimeList = new LinkedHashSet<>();
         this.overallWorkingHours = overallWorkingHours;
         this.description = description;
         this.partUsedList = new ArrayList<>();
