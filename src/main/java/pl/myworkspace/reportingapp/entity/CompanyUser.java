@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import pl.myworkspace.reportingapp.entity.enums.CompanyUserType;
 
 import java.util.Objects;
 import java.util.UUID;

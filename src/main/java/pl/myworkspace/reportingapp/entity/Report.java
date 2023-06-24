@@ -6,7 +6,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import pl.myworkspace.reportingapp.entity.enums.ReasonType;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -36,12 +38,12 @@ public class Report {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "report", fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<WorkingTime> workingTimeList;
 
-    private float overallWorkingHours;
+    private double overallWorkingHours;
 
     @Column(length = 4000)
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "report")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "report", fetch = FetchType.LAZY)
     private List<PartUsed> partUsedList;
 
     @ManyToOne
@@ -58,13 +60,12 @@ public class Report {
 
 
     public Report(@NonNull LocalDate reportDate,
-                  float overallWorkingHours,
                   @NonNull String description) {
         this.id = UUID.randomUUID();
         this.reasonTypeSet = new LinkedHashSet<>();
         this.reportDate = reportDate;
         this.workingTimeList = new LinkedHashSet<>();
-        this.overallWorkingHours = overallWorkingHours;
+        this.overallWorkingHours = 0;
         this.description = description;
         this.partUsedList = new ArrayList<>();
     }
@@ -79,8 +80,16 @@ public class Report {
         if (workingTime != null && !workingTimeList.contains(workingTime)) {
             workingTime.setReport(this);
             workingTimeList.add(workingTime);
+            overallWorkingHours = sumTime(workingTimeList);
         }
     }
+
+    public static double sumTime (Set<WorkingTime> timeSet){
+        return timeSet.stream()
+                .mapToDouble(workingTime1 -> Duration.between(workingTime1.getEndTime(), workingTime1.getStartTime()).toSeconds())
+                .sum();
+    }
+
 
     public void addPartUsed(PartUsed partUsed) {
         if (partUsed != null && !partUsedList.contains(partUsed)) {
@@ -101,7 +110,7 @@ public class Report {
         }
     }
 
-    public void addCustomerEmployee (CustomerEmployee customerEmployee) {
+    public void addCustomerEmployee(CustomerEmployee customerEmployee) {
         if (customerEmployee != null && this.customerEmployee == null) {
             customerEmployee.addReport(this);
         }
@@ -131,5 +140,16 @@ public class Report {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Report report = (Report) o;
+        return Double.compare(report.overallWorkingHours, overallWorkingHours) == 0 && Objects.equals(companyEmployee, report.companyEmployee) && Objects.equals(reportDate, report.reportDate) && Objects.equals(description, report.description) && Objects.equals(device, report.device) && Objects.equals(customer, report.customer) && Objects.equals(customerEmployee, report.customerEmployee);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(companyEmployee, reportDate, overallWorkingHours, description, device, customer, customerEmployee);
+    }
 }

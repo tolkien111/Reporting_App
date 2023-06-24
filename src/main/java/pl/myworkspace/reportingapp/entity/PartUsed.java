@@ -21,7 +21,7 @@ public class PartUsed {
     private int amount;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "partUsed")
-    private Set<Part> partList;
+    private Set<Part> partSet;
 
     @ManyToOne
     @JoinColumn(name = "report_id")
@@ -30,14 +30,15 @@ public class PartUsed {
 
     public PartUsed() {
         this.id = UUID.randomUUID();
-        this.amount = partList.size();
-        this.partList = new LinkedHashSet<>();
+        this.amount = 0;
+        this.partSet = new LinkedHashSet<>();
     }
 
     public void addPart(Part part) {
         if (part != null) {
             part.setPartUsed(this);
-            partList.add(part);
+            partSet.add(part);
+            amount = partSet.size();
         }
     }
 

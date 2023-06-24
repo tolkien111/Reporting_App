@@ -11,14 +11,14 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "parts")
-@NoArgsConstructor (access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Part {
 
     @Id
     private UUID id;
 
-    @OneToOne (cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "part_base_id")
     private PartBase partBase;
 

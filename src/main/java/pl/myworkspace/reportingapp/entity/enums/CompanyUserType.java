@@ -1,4 +1,4 @@
-package pl.myworkspace.reportingapp.entity;
+package pl.myworkspace.reportingapp.entity.enums;
 
 public enum CompanyUserType {
     COMPANY_MANAGER,
