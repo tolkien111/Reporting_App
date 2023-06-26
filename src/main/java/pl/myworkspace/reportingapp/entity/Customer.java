@@ -22,12 +22,13 @@ public class Customer extends CustomerUser {
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "customer", orphanRemoval = true)
+    @JoinColumn(unique = true)
     private Address address;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY)
     private List<CustomerEmployee> customerEmployeesList;
 
-    @OneToMany (cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Device> deviceList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY)

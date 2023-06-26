@@ -1,10 +1,7 @@
 package pl.myworkspace.reportingapp.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -13,7 +10,6 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-
 public abstract class CustomerUser {
 
     @Id
