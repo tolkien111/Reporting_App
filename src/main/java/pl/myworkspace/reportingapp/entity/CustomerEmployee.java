@@ -26,7 +26,7 @@ public class CustomerEmployee extends CustomerUser{
     private Customer customer;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerEmployee", fetch = FetchType.LAZY)
-    private List<Report> reportList;
+    private List<ReportBase> reportBaseList;
 
     public CustomerEmployee(@NonNull String email,
                             @NotNull String phoneNumber,
@@ -35,14 +35,14 @@ public class CustomerEmployee extends CustomerUser{
         super(email, phoneNumber);
         this.firstName = firstName;
         this.lastName = lastName;
-        this.reportList = new ArrayList<>();
+        this.reportBaseList = new ArrayList<>();
     }
 
 
-    protected void addReport(Report report) {
-        if (report != null && !reportList.contains(report)) {
-            report.setCustomerEmployee(this);
-            reportList.add(report);
+    protected void addReportBase(ReportBase reportBase) {
+        if (reportBase != null && !reportBaseList.contains(reportBase)) {
+            reportBase.setCustomerEmployee(this);
+            reportBaseList.add(reportBase);
         }
     }
 

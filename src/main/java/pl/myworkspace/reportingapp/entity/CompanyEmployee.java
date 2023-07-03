@@ -23,7 +23,7 @@ public class CompanyEmployee extends CompanyUser {
     private LocalDate startDateOfWork;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy ="companyEmployee", fetch = FetchType.LAZY)
-    private List<Report> reportList;
+    private List<ReportBase> reportBaseList;
 
     public CompanyEmployee(@NonNull String email,
                            @NonNull String userPassword,
@@ -36,13 +36,13 @@ public class CompanyEmployee extends CompanyUser {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.startDateOfWork = startDateOfWork;
-        this.reportList = new ArrayList<>();
+        this.reportBaseList = new ArrayList<>();
     }
 
-    public void addReport(Report report){
-        if (report != null && !reportList.contains(report)){
-            report.setCompanyEmployee(this);
-            reportList.add(report);
+    public void addReportBase(ReportBase reportBase){
+        if (reportBase != null && !reportBaseList.contains(reportBase)){
+            reportBase.setCompanyEmployee(this);
+            reportBaseList.add(reportBase);
         }
     }
 

@@ -2,10 +2,7 @@ package pl.myworkspace.reportingapp.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.*;
 
@@ -24,8 +21,8 @@ public class PartUsed {
     private Set<Part> partSet;
 
     @ManyToOne
-    @JoinColumn(name = "report_id")
-    private Report report;
+    @JoinColumn(name = "reportBase_id")
+    private ReportBase reportBase;
 
 
     public PartUsed() {
@@ -42,9 +39,9 @@ public class PartUsed {
         }
     }
 
-    protected void setReport(Report report) {
-        if (report != null && this.report == null) {
-            this.report = report;
+    protected void setReportBase(ReportBase reportBase) {
+        if (reportBase != null && this.reportBase == null) {
+            this.reportBase = reportBase;
         }
     }
 
@@ -53,11 +50,11 @@ public class PartUsed {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PartUsed partUsed = (PartUsed) o;
-        return Objects.equals(id, partUsed.id) && Objects.equals(report, partUsed.report);
+        return Objects.equals(id, partUsed.id) && Objects.equals(reportBase, partUsed.reportBase);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, report);
+        return Objects.hash(id, reportBase);
     }
 }

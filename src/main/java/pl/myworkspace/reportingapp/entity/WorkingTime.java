@@ -28,8 +28,8 @@ public final class WorkingTime {
 
 
     @ManyToOne
-    @JoinColumn(name = "report_id")
-    private Report report;
+    @JoinColumn(name = "reportBase_id")
+    private ReportBase reportBase;
 
     public WorkingTime(@NonNull LocalDate date,
                        @NonNull LocalTime startTime,
@@ -38,12 +38,12 @@ public final class WorkingTime {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.report = null;
+        this.reportBase = null;
     }
 
-    void setReport(Report report) {
-        if (report != null && this.report == null) {
-            this.report = report;
+    void setReportBase(ReportBase reportBase) {
+        if (reportBase != null && this.reportBase == null) {
+            this.reportBase = reportBase;
         }
     }
 
@@ -52,11 +52,11 @@ public final class WorkingTime {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WorkingTime that = (WorkingTime) o;
-        return Objects.equals(date, that.date) && Objects.equals(startTime, that.startTime) && Objects.equals(endTime, that.endTime) && Objects.equals(report, that.report);
+        return Objects.equals(date, that.date) && Objects.equals(startTime, that.startTime) && Objects.equals(endTime, that.endTime) && Objects.equals(reportBase, that.reportBase);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(date, startTime, endTime, report);
+        return Objects.hash(date, startTime, endTime, reportBase);
     }
 }

@@ -22,7 +22,7 @@ public class Customer extends CustomerUser {
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "customer", orphanRemoval = true)
-    @JoinColumn(unique = true)
+    @JoinColumn(name = "address_id",unique = true)
     private Address address;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY)
@@ -32,7 +32,7 @@ public class Customer extends CustomerUser {
     private List<Device> deviceList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY)
-    private List<Report> reportList;
+    private List<ReportBase> reportBaseList;
 
     public Customer(@NonNull String email,
                     @NonNull String phoneNumber,
@@ -43,7 +43,7 @@ public class Customer extends CustomerUser {
         this.address = addAddress(address);
         this.customerEmployeesList = new ArrayList<>();
         this.deviceList = new ArrayList<>();
-        this.reportList = new ArrayList<>();
+        this.reportBaseList = new ArrayList<>();
     }
 
     private Address addAddress(Address address) {
@@ -54,10 +54,10 @@ public class Customer extends CustomerUser {
         return this.address;
     }
 
-    protected void addReport(Report report) {
-        if (report != null && !reportList.contains(report)) {
-            report.setCustomer(this);
-            reportList.add(report);
+    protected void addReportBase(ReportBase reportBase) {
+        if (reportBase != null && !reportBaseList.contains(reportBase)) {
+            reportBase.setCustomer(this);
+            reportBaseList.add(reportBase);
         }
     }
 

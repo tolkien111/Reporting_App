@@ -32,7 +32,7 @@ public class Device {
     private Customer customer;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "device", fetch = FetchType.LAZY)
-    private List<Report> reportList;
+    private List<ReportBase> reportBaseList;
 
 
     public Device(@NonNull DeviceBase deviceBase,
@@ -40,13 +40,13 @@ public class Device {
         this.id = UUID.randomUUID();
         this.deviceBase = deviceBase;
         this.serialNumber = serialNumber;
-        this.reportList = new ArrayList<>();
+        this.reportBaseList = new ArrayList<>();
     }
 
-    protected void addReport(Report report) {
-        if (report != null && !reportList.contains(report)) {
-            report.setDevice(this);
-            reportList.add(report);
+    protected void addReportBase(ReportBase reportBase) {
+        if (reportBase != null && !reportBaseList.contains(reportBase)) {
+            reportBase.setDevice(this);
+            reportBaseList.add(reportBase);
         }
     }
 

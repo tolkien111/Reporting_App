@@ -63,24 +63,28 @@ class RepositoriesTest {
     }
 
     @Test
-    void shouldFindAllManagers() {
+    void shouldFindAllManagersAndOrderByLastName() {
         //GIVEN
         final var companyManager01 = new CompanyManager("wp@wp.pl", "aaa", "John", "Smith", "790774564", LocalDate.of(2020, 4, 30));
         //WHEN
         final var result = repositoryCompanyUser.findAllCompanyManagers();
         //THEN
-        Assertions.assertEquals(companyManager01, result.get(0));
-        assertEquals(companyManager01, result.get(0));
         assertEquals(2, result.size());
+        assertEquals(companyManager01, result.get(1));
+
     }
 
     @Test
-    void shouldFindAllEmployees() {
+    void shouldFindAllEmployeesAndOrderByLastName() {
         //GIVEN
+        final var companyEmployee01 = new CompanyEmployee("dddaaa@gmail.com", "ccc", "Alex", "Last", "4589654245", LocalDate.of(2019, 6, 14));
+        final var companyEmployee02 = new CompanyEmployee("dddrrr@gmail.com", "ddd", "James", "Cool", "7896396245", LocalDate.of(2017, 3, 22));
         //WHEN
         final var result = repositoryCompanyUser.findAllCompanyEmployees();
         //THEN
         assertEquals(3, result.size());
+        assertEquals(companyEmployee02, result.get(0));
+        assertEquals(companyEmployee01, result.get(2));
     }
 
     @Test
